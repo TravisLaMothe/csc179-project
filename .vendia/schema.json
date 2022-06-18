@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://vendia.net/schemas/demos/employee.json",
+  "title": "Employee",
+  "description": "Employee data",
+  "type": "object",
+  "properties": {
+    "Employee": {
+      "description": "Employee data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Employee name",
+            "type": "string"
+          },
+          "age": {
+            "description": "Employee age",
+            "type": "number"
+          },
+          "gender": {
+            "description": "Gender identity",
+            "type": "string",
+            "enum": [
+              "Woman",
+              "Man",
+              "Transgender",
+              "NonBinary",
+              "NoResponse"
+            ]
+          },
+          "height": {
+            "description": "Height in inches",
+            "type": "number"
+          },
+          "weight": {
+            "description": "Weight in pounds",
+            "type": "number"
+          },
+          "temperature": {
+            "description": "Body temperature in fahrenheit",
+            "type": "number"
+          },
+          "pulse": {
+            "description": "Pulse rate",
+            "type": "number"
+          },
+          "pressure": {
+            "description": "Blood pressure",
+            "type": "number"
+          },
+          "respiration": {
+            "description": "Respiration rate",
+            "type": "number"
+          },
+          "exercise": {
+            "description": "Avg hours of exercise per week",
+            "type": "number"
+          },
+          "vacation": {
+            "description": "Vacation balance",
+            "type": "number"
+          },
+          "work": {
+            "description": "Avg hours of work per week",
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}
