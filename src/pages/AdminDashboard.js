@@ -32,7 +32,13 @@ import ConfirmationDialogRaw from '../ConfirmationDialogRaw'
 
 import {client} from '../index'
 
+var loaded = false;
+
 async function populateTable() {
+  if (loaded)
+    return;
+    loaded = true;
+  console.log('pulling data');
       const employeeList =  await client.entities.employee.list()
 
       let USERS = []
@@ -225,10 +231,42 @@ function createData(name, age, gender, height, weight, temperature, pulse, press
  };
  
   var rows = [];
+
+  async function async(nname, aage, ggender, hheight, wweight, ttemperature, ppulse, ppressure, rrespiration, eexercise, vvacation, wwork) {
+    console.log(ggender);
+    // const employeeResponse = await assadsadclient.entities.employee.add({
+    //   name: nname,
+    //   age: isNaN(aage) ? 1 : aage,
+    //   gender: ggender,
+    //   height: isNaN(hheight) ? 1 : hheight,
+    //   weight: isNaN(wweight) ? 1 : wweight,
+    //   temperature: isNaN(ttemperature) ? 1 : ttemperature,
+    //   pulse: isNaN(ppulse) ? 1 : ppulse,
+    //   pressure: isNaN(ppressure) ? 1 : ppressure,
+    //   respiration: isNaN(rrespiration) ? 1 : rrespiration,
+    //   exercise: isNaN(eexercise) ? 1 : eexercise,
+    //   vacation: isNaN(vvacation) ? 1 : vvacation,
+    //   work: isNaN(wwork) ? 1 : wwork,
+    // });
+
+    const employeeResponse = await client.entities.employee.add({
+      name: nname,
+      age: isNaN(aage) ? 1 : aage,
+      gender: 'Man',
+      height: isNaN(hheight) ? 1 : hheight,
+      weight: isNaN(wweight) ? 1 : wweight,
+      temperature: isNaN(ttemperature) ? 1 : ttemperature,
+      pulse: isNaN(ppulse) ? 1 : ppulse,
+      pressure: isNaN(ppressure) ? 1 : ppressure,
+      respiration: isNaN(rrespiration) ? 1 : rrespiration,
+      exercise: isNaN(eexercise) ? 1 : eexercise,
+      vacation: isNaN(vvacation) ? 1 : vvacation,
+      work: isNaN(wwork) ? 1 : wwork,
+    });
+  }
  
 function AdminDashboard() {
    const [data, setData] = React.useState([])
-    
     populateTable().then(res => setData(rows));
 
     const [open, setOpen] = React.useState(false);
@@ -255,27 +293,30 @@ function AdminDashboard() {
             alert('Please make sure all boxes are filled in correctly!');
             break;
          default:
+          async(firstNameRef.current.value + ' ' + lastNameRef.current.value, ageRef.current.value, value, heightRef.current.value, weightRef.current.value, 0, 0, 0, 0, 0, 0, 0);
+          loaded = false;
+          populateTable().then(res => setData(rows));
+         //todo: fix
+          //   (async () => {
+          //      try {
+          //         const employeeAddResponse = await client.entities.employee.add({
+          //            name: firstNameRef.current.value + ' ' + lastNameRef.current.value,
+          //            age: ageRef.current.value,
+          //            gender: value,
+          //            height: heightRef.current.value,
+          //            weight: weightRef.current.value,
+          //            temperature: 0,
+          //            pulse: 0,
+          //            pressure: 0,
+          //            respiration: 0,
+          //            exercise: 0,
+          //            vacation: 0,
+          //            work: 0
+          //          });
+          //      } catch (e) {
 
-            (async () => {
-               try {
-                  const employeeAddResponse = await client.entities.employee.add({
-                     name: firstNameRef.current.value + ' ' + lastNameRef.current.value,
-                     age: ageRef.current.value,
-                     gender: value,
-                     height: heightRef.current.value,
-                     weight: weightRef.current.value,
-                     temperature: 0,
-                     pulse: 0,
-                     pressure: 0,
-                     respiration: 0,
-                     exercise: 0,
-                     vacation: 0,
-                     work: 0
-                   });
-               } catch (e) {
-
-               }
-           })();
+          //      }
+          //  })();
 
             setOpen(false);
             break;
