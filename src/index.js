@@ -7,9 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import { createVendiaClient } from '@vendia/client';
 
 export const client = createVendiaClient({
-  apiUrl: `https://48980qxx34.execute-api.us-west-2.amazonaws.com/graphql/`,
-  websocketUrl: `wss://0ei6sdgauc.execute-api.us-west-2.amazonaws.com/graphql`,
-  apiKey: `CYpcFyh7yYvUsnuY9gT6CrqooZnDq4iXpzmT8BzidBBy`,
+  apiUrl: `https://mpoqlxa1p5.execute-api.us-west-2.amazonaws.com/graphql/`,
+  websocketUrl: `wss://m02lhbr6v6.execute-api.us-west-2.amazonaws.com/graphql`,
+  apiKey: `77ppVdvaCmNuoJmQjhKJetNjgF5wPkTTDtQssczzTfrB`,
   //apiKey: process.env.VENDIA_API_KEY
 });
 

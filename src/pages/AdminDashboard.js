@@ -37,30 +37,30 @@ var loaded = false;
 async function populateTable() {
   if (loaded)
     return;
-    loaded = true;
+  loaded = true;
   console.log('pulling data');
-      const employeeList =  await client.entities.employee.list()
+  const employeeList =  await client.entities.employee.list()
 
-      let USERS = []
-      var i = 0;
-     for (const employee of employeeList.items) {
-         const name = employee.name; 
-         const age = employee.age;
-         const gender = employee.gender;
-         const height = employee.height;
-         const weight = employee.weight;
-         const temperature = employee.temperature;
-         const pulse = employee.pulse;
-         const pressure = employee.pressure;
-         const respiration = employee.respiration;
-         const exercise = employee.exercise;
-         const vacation = employee.vacation;
-         const work = employee.work;
+  let USERS = []
+  var i = 0;
+  for (const employee of employeeList.items) {
+      const name = employee.name; 
+      const age = employee.age;
+      const gender = employee.gender;
+      const height = employee.height;
+      const weight = employee.weight;
+      const temperature = employee.temperature;
+      const pulse = employee.pulse;
+      const pressure = employee.pressure;
+      const respiration = employee.respiration;
+      const exercise = employee.exercise;
+      const vacation = employee.vacation;
+      const work = employee.work;
 
-         USERS[i++] = createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
-     }
-     rows = USERS;
- }
+      USERS[i++] = createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
+  }
+  rows = USERS;
+}
 
 function createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work) {
    return {
@@ -191,11 +191,6 @@ function createData(name, age, gender, height, weight, temperature, pulse, press
              </Collapse>
          </TableCell>
        </TableRow>
-
-
-
-
-
      </React.Fragment>
    );
  }
@@ -349,8 +344,6 @@ function AdminDashboard() {
     }
   };
 
-
-
     return (
        <div>
           <h1>Admin Dashboard</h1>
@@ -361,14 +354,10 @@ function AdminDashboard() {
             </Button>
          </Stack>
 
-         
-
          <Dialog open={open} onClose={handleCancel}>
         <DialogTitle>New Employee Creation Form</DialogTitle>
         <DialogContent>
 
-         
-          
           <TextField
             autoFocus
             margin="dense"
@@ -380,7 +369,6 @@ function AdminDashboard() {
             inputRef={firstNameRef}
           />
 
-
           <TextField
             autoFocus
             margin="dense"
@@ -391,12 +379,6 @@ function AdminDashboard() {
             variant="standard"
             inputRef={lastNameRef}
           />
-
-
-
-
-
-
 
    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <List component="div" role="group">
@@ -420,15 +402,6 @@ function AdminDashboard() {
         />
       </List>
     </Box>
-
-
-
-
-
-
-
-
-
 
           <TextField
             autoFocus
@@ -463,10 +436,6 @@ function AdminDashboard() {
             inputRef={weightRef}
           />
 
-
-
-
-
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel}>Cancel</Button>
@@ -498,5 +467,4 @@ function AdminDashboard() {
     );
 }
 
- 
 export default AdminDashboard;
