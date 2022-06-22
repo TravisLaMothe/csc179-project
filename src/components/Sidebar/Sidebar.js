@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 
 import { Link } from "react-router-dom";
 import "./Sidebar.css"

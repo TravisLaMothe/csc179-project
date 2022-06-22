@@ -17,22 +17,22 @@ import WorkHistoryOutlinedIcon from '@mui/icons-material/WorkHistoryOutlined';
 
 import PublishIcon from '@mui/icons-material/Publish';
 
-import {client} from '../../../index'
-async function getUser() {
-    const userResponse = await client.entities.user.get('0181747f-3b8d-d2ac-139b-3052b7e850b7');
-    const name = userResponse.name; 
-    const age = userResponse.age;
-    const gender = userResponse.gender;
-    const height = userResponse.height;
-    const weight = userResponse.weight;
-    const temperature = userResponse.temperature;
-    const pulse = userResponse.pulse;
-    const pressure = userResponse.pressure;
-    const respiration = userResponse.respiration;
-    const exercise = userResponse.exercise;
-    const vacation = userResponse.vacation;
-    const work = userResponse.work;
-}
+// import {client} from '../../../index'
+// async function getUser() {
+//     const userResponse = await client.entities.user.get('0181747f-3b8d-d2ac-139b-3052b7e850b7');
+//     const name = userResponse.name; 
+//     const age = userResponse.age;
+//     const gender = userResponse.gender;
+//     const height = userResponse.height;
+//     const weight = userResponse.weight;
+//     const temperature = userResponse.temperature;
+//     const pulse = userResponse.pulse;
+//     const pressure = userResponse.pressure;
+//     const respiration = userResponse.respiration;
+//     const exercise = userResponse.exercise;
+//     const vacation = userResponse.vacation;
+//     const work = userResponse.work;
+// }
 
 export default function MyInfo() {
     return(
@@ -138,39 +138,34 @@ export default function MyInfo() {
                   <label>Name</label>
                   <input
                     type="text"
-                    placeholder="annabeck99"
                     className="userUpdateInput"
                   />
                 </div>
                 <div className="userUpdateItem">
-                  <label>Full Name</label>
+                  <label>Age</label>
                   <input
                     type="text"
-                    placeholder="Anna Becker"
                     className="userUpdateInput"
                   />
                 </div>
                 <div className="userUpdateItem">
-                  <label>Email</label>
+                  <label>Gender</label>
                   <input
                     type="text"
-                    placeholder="annabeck99@gmail.com"
                     className="userUpdateInput"
                   />
                 </div>
                 <div className="userUpdateItem">
-                  <label>Phone</label>
+                  <label>Height</label>
                   <input
                     type="text"
-                    placeholder="+1 123 456 67"
                     className="userUpdateInput"
                   />
                 </div>
                 <div className="userUpdateItem">
-                  <label>Address</label>
+                  <label>Weight</label>
                   <input
                     type="text"
-                    placeholder="New York | USA"
                     className="userUpdateInput"
                   />
                 </div>

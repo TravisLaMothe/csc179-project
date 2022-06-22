@@ -96,7 +96,6 @@ function Row(props) {
  
  
     return (
-       
       <React.Fragment>
         <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
           <TableCell>
@@ -306,7 +305,12 @@ export default function ViewTables() {
     };
     return (
         <div className="viewTables">
+          <div className="userTitleContainer">
             <h1>View Tables</h1>
+          </div>
+          <div className="userShow">
+        
+
         <Stack direction="row"  spacing={2}>
           <Button variant="contained" endIcon={<AddIcon />} 
           onClick={handleClickOpen}>
@@ -423,6 +427,7 @@ export default function ViewTables() {
       </TableBody>
     </Table>
   </TableContainer>
+     </div>
      </div>
     )
 }
