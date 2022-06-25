@@ -15,20 +15,7 @@ import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 
 import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
 import Stack from '@mui/material/Stack';
-
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-
-import ConfirmationDialogRaw from '../../../ConfirmationDialogRaw'
 
 import {client} from '../../../index'
 import "./ViewTables.css"
@@ -227,82 +214,17 @@ function Row(props) {
   
 var rows = [];
 
-async function async(nname, aage, ggender, hheight, wweight, ttemperature, ppulse, ppressure, rrespiration, eexercise, vvacation, wwork) {
-    console.log(ggender);
-
-    const employeeResponse = await client.entities.employee.add({
-      name: nname,
-      age: isNaN(aage) ? 1 : aage,
-      gender: 'Man',
-      height: isNaN(hheight) ? 1 : hheight,
-      weight: isNaN(wweight) ? 1 : wweight,
-      temperature: isNaN(ttemperature) ? 1 : ttemperature,
-      pulse: isNaN(ppulse) ? 1 : ppulse,
-      pressure: isNaN(ppressure) ? 1 : ppressure,
-      respiration: isNaN(rrespiration) ? 1 : rrespiration,
-      exercise: isNaN(eexercise) ? 1 : eexercise,
-      vacation: isNaN(vvacation) ? 1 : vvacation,
-      work: isNaN(wwork) ? 1 : wwork,
-    });
-}
-
 export default function ViewTables() {
     const [data, setData] = React.useState([])
     populateTable().then(res => setData(rows));
 
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleCancel = () => {
-      setOpen(false);
+    const handleClick = () => {
+      loaded = false;
+      populateTable();
     };
 
-    const handleSubmit = (res) => {
-      switch (true) {
-         case firstNameRef.current.value === "":
-         case lastNameRef.current.value === "":
-         case ageRef.current.value === "":
-         case weightRef.current.value === "":
-         case heightRef.current.value === "":
-         case value === "":
-         case isNaN(ageRef.current.value):
-         case isNaN(weightRef.current.value):
-         case isNaN(heightRef.current.value):
-            alert('Please make sure all boxes are filled in correctly!');
-            break;
-         default:
-          async(firstNameRef.current.value + ' ' + lastNameRef.current.value, ageRef.current.value, value, heightRef.current.value, weightRef.current.value, 0, 0, 0, 0, 0, 0, 0);
-          loaded = false;
-          populateTable().then(res => setData(rows));
-
-            setOpen(false);
-            break;
-      }
-    };
-
-    const firstNameRef = useRef('')
-    const lastNameRef = useRef('')
-    const ageRef = useRef('')
-    const weightRef = useRef('')
-    const heightRef = useRef('')
-
-    const [openGenderMenu, setGenderOpen] = React.useState(false);
-  const [value, setValue] = React.useState('Woman');
-
-  const handleClickListItem = () => {
-   setGenderOpen(true);
-  };
-
-  const handleClose = (newValue) => {
-   setGenderOpen(false);
-
-    if (newValue) {
-      setValue(newValue);
-    }
-    };
     return (
         <div className="viewTables">
           <div className="userTitleContainer">
@@ -312,100 +234,11 @@ export default function ViewTables() {
         
 
         <Stack direction="row"  spacing={2}>
-          <Button variant="contained" endIcon={<AddIcon />} 
-          onClick={handleClickOpen}>
-             Add Employee
+          <Button variant="contained"
+          onClick={handleClick}>
+             Refresh
           </Button>
         </Stack>
-
-       <Dialog open={open} onClose={handleCancel}>
-      <DialogTitle>New Employee Creation Form</DialogTitle>
-      <DialogContent>
-
-        <TextField
-          autoFocus
-          margin="dense"
-          id="newName"
-          label="First Name"
-          type="email"
-          fullWidth
-          variant="standard"
-          inputRef={firstNameRef}
-        />
-
-        <TextField
-          autoFocus
-          margin="dense"
-          id="newName"
-          label="Last Name"
-          type="email"
-          fullWidth
-          variant="standard"
-          inputRef={lastNameRef}
-        />
-
- <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-    <List component="div" role="group">
-      <ListItem
-        button
-        divider
-        aria-haspopup="true"
-        aria-controls="ringtone-menu"
-        aria-label="Gender"
-        onClick={handleClickListItem}
-      >
-        <ListItemText primary="Gender" secondary={value} />
-      </ListItem>
-    
-      <ConfirmationDialogRaw
-        id="ringtone-menu"
-        keepMounted
-        open={openGenderMenu}
-        onClose={handleClose}
-        value={value}
-      />
-    </List>
-  </Box>
-
-        <TextField
-          autoFocus
-          margin="dense"
-          id="newName"
-          label="Age (Number)"
-          type="email"
-          fullWidth
-          variant="standard"
-          inputRef={ageRef}
-        />
-
-        <TextField
-          autoFocus
-          margin="dense"
-          id="newName"
-          label="Height (Number in inches)"
-          type="email"
-          fullWidth
-          variant="standard"
-          inputRef={heightRef}
-        />
-
-        <TextField
-          autoFocus
-          margin="dense"
-          id="newName"
-          label="Weight (Number in pounds)"
-          type="email"
-          fullWidth
-          variant="standard"
-          inputRef={weightRef}
-        />
-
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleCancel}>Cancel</Button>
-        <Button onClick={handleSubmit}>Submit</Button>
-      </DialogActions>
-    </Dialog>
 
 
         <TableContainer component={Paper}>

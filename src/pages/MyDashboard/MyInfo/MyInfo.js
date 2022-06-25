@@ -61,25 +61,25 @@ export default function MyInfo() {
                     <div className="userShowInfo">
                         <CalendarTodayIcon className="userShowIcon" />
                         Age:
-                        <span className="userShowInfoTitle">10.12.1999</span>
+                        <span className="userShowInfoTitle">28</span>
                     </div>
                     {/* gender */}
                     <div className="userShowInfo">
                         <WcIcon className="userShowIcon" />
                         Gender: 
-                        <span className="userShowInfoTitle">10.12.1999</span>
+                        <span className="userShowInfoTitle">Woman</span>
                     </div>
                     {/* height */}
                     <div className="userShowInfo">
                         <StraightenIcon className="userShowIcon" />
                         Height: 
-                        <span className="userShowInfoTitle">10.12.1999</span>
+                        <span className="userShowInfoTitle">78</span>
                     </div>
                     {/* weight */}
                     <div className="userShowInfo">
                         <ScaleIcon className="userShowIcon" />
                         Weight: 
-                        <span className="userShowInfoTitle">10.12.1999</span>
+                        <span className="userShowInfoTitle">114</span>
                     </div>
                 </div>
 
@@ -89,43 +89,49 @@ export default function MyInfo() {
                     <div className="userShowInfo">
                         <ThermostatIcon className="userShowIcon" />
                         Temperature: 
-                        <span className="userShowInfoTitle">+1 123 456 67</span>
+                        <span className="userShowInfoTitle">98.6</span>
                     </div>
                     {/* pulse */}
                     <div className="userShowInfo">
                         <TimelineOutlinedIcon className="userShowIcon" />
                         Pulse: 
-                        <span className="userShowInfoTitle">annabeck99@gmail.com</span>
+                        <span className="userShowInfoTitle">100</span>
                     </div>
                     {/* pressure */}
                     <div className="userShowInfo">
                         <SpeedOutlinedIcon className="userShowIcon" />
                         Pressure: 
-                        <span className="userShowInfoTitle">New York | USA</span>
+                        <span className="userShowInfoTitle">120</span>
                     </div>
                     {/* respiration */}
                     <div className="userShowInfo">
                         <AirOutlinedIcon className="userShowIcon" />
                         Respiration: 
-                        <span className="userShowInfoTitle">New York | USA</span>
+                        <span className="userShowInfoTitle">12</span>
                     </div>
                     {/* exercise */}
                     <div className="userShowInfo">
                         <DownhillSkiingOutlinedIcon className="userShowIcon" />
                         Exercise: 
-                        <span className="userShowInfoTitle">New York | USA</span>
+                        <span className="userShowInfoTitle">12</span>
+                        <span className="userShowInfoTitle"> </span>
+                        hours
                     </div>
                     {/* vacation */}
                     <div className="userShowInfo">
                         <HolidayVillageOutlinedIcon className="userShowIcon" />
                         Vacation: 
-                        <span className="userShowInfoTitle">New York | USA</span>
+                        <span className="userShowInfoTitle">34</span>
+                        <span className="userShowInfoTitle"> </span>
+                        hours
                     </div>
                     {/* work */}
                     <div className="userShowInfo">
                         <WorkHistoryOutlinedIcon className="userShowIcon" />
                         Work: 
-                        <span className="userShowInfoTitle">New York | USA</span>
+                        <span className="userShowInfoTitle">91</span>
+                        <span className="userShowInfoTitle"> </span>
+                        hours
                     </div>
                 </div>
             </div>
