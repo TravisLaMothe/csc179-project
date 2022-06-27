@@ -24,7 +24,7 @@
     font-weight: bold;
     font-size: 30px;
     color: rgb(21, 170, 113);
-    text-shadow: 1px 1px #68686871;
+    text-shadow: -5px 5px 20px #ced0d3;
     cursor: pointer;
 }
 

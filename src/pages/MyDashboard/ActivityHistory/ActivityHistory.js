@@ -7,6 +7,8 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import { BarChart, Bar } from 'recharts';
+import { Link } from "react-router-dom";
+import Button from '@mui/material/Button';
 
 const exerciseData = [{name: '6/17', minute: 400, pv: 2400, amt: 2400}, 
 {name: '6/18', minute: 300, pv: 2400, amt: 2400}, 
@@ -51,7 +53,16 @@ export default function ActivityHistory() {
     return(
         <div className="activityHistory">
             <div className="userTitleContainer">
-                <h1>Activity History</h1>
+              <div className="topLeft">
+                <h1 className="userTitle">Activity Histor</h1>
+              </div>
+              <div className="topRight">
+                <Button variant="text">
+                  <Link to="/UserDashboard" className="link">
+                        Back to Dashboard
+                  </Link>
+                </Button>
+              </div>
             </div>
             <div className="userShow">
                 <Box sx={{ width: '100%', typography: 'body1' }}>

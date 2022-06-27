@@ -4,9 +4,11 @@ import Button from '@mui/material/Button';
 
 import { Link } from "react-router-dom";
 import "./Sidebar.css"
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
 import TimelineIcon from '@mui/icons-material/Timeline';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
+import AddchartIcon from '@mui/icons-material/Addchart';
 import TableViewIcon from '@mui/icons-material/TableView';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
@@ -32,10 +34,18 @@ export default function Sidebar() {
         <div className="sidebar">
             <div className="sidebarWrapper">
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitle">My Dashboard</h3>
+                    <h3 className="sidebarTitle">User Menu</h3>
                     <ul className="sidebarList">
                         <ColorButton variant="text">
-                            <Link to="/" className="link">
+                            <Link to="/UserDashboard" className="link">
+                                <li className="sidebarListItem">
+                                    <DashboardIcon className="sidebarIcon" />
+                                    Dashboard
+                                </li>
+                            </Link>
+                        </ColorButton>
+                        <ColorButton variant="text">
+                            <Link to="/MyInfo" className="link">
                                 <li className="sidebarListItem">
                                     <PersonIcon className="sidebarIcon" />
                                     My Info
@@ -45,7 +55,7 @@ export default function Sidebar() {
                         <ColorButton variant="text">
                             <Link to="/LogActivity" className="link">
                                 <li className="sidebarListItem">
-                                    <TimelineIcon className="sidebarIcon" />
+                                    <AddchartIcon className="sidebarIcon" />
                                     Log Activity
                                 </li>
                             </Link>
@@ -53,7 +63,7 @@ export default function Sidebar() {
                         <ColorButton variant="text">
                             <Link to="/ActivityHistory" className="link">
                                 <li className="sidebarListItem">
-                                    <TrendingUpIcon className="sidebarIcon" />
+                                    <TimelineIcon className="sidebarIcon" />
                                     Activity History
                                 </li>
                             </Link>
@@ -61,8 +71,16 @@ export default function Sidebar() {
                     </ul>
                 </div>
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitle">Admin Dashboard</h3>
+                    <h3 className="sidebarTitle">Admin Menu</h3>
                     <ul className="sidebarList">
+                        <ColorButton variant="text">
+                            <Link to="/AdminMainDashboard" className="link">
+                                <li className="sidebarListItem">
+                                    <DashboardIcon className="sidebarIcon" />
+                                    Dashboard
+                                </li>
+                            </Link>
+                        </ColorButton>
                         <ColorButton variant="text">
                             <Link to="/ViewTables" className="link">
                                 <li className="sidebarListItem">
@@ -74,7 +92,7 @@ export default function Sidebar() {
                         <ColorButton variant="text">
                             <Link to="/Analytics" className="link">
                                 <li className="sidebarListItem">
-                                    <TimelineIcon className="sidebarIcon" />
+                                    <AnalyticsIcon className="sidebarIcon" />
                                     Analytics
                                 </li>
                             </Link>
@@ -90,7 +108,7 @@ export default function Sidebar() {
                     </ul>
                 </div>
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitle">Partner Dashboard</h3>
+                    <h3 className="sidebarTitle">Partner Menu</h3>
                     <ul className="sidebarList">
                         <ColorButton variant="text">
                             <Link to="/ViewTable" className="link">

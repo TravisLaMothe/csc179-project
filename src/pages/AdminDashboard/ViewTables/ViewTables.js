@@ -1,5 +1,6 @@
 import React, {useRef} from "react";
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -228,7 +229,16 @@ export default function ViewTables() {
     return (
         <div className="viewTables">
           <div className="userTitleContainer">
-            <h1>View Tables</h1>
+            <div className="topLeft">
+              <h1 className="userTitle">View Tables</h1>
+            </div>
+            <div className="topRight">
+              <Button variant="text">
+                <Link to="/AdminMainDashboard" className="link">
+                  Back to Dashboard
+                </Link>
+              </Button>
+            </div>
           </div>
           <div className="userShow">
         

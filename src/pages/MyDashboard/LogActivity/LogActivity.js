@@ -1,11 +1,22 @@
 import "./LogActivity.css"
 import * as React from 'react';
+import { Link } from "react-router-dom";
+import Button from '@mui/material/Button';
 
 export default function LogActivity() {
     return(
         <div className="logActivity">
             <div className="userTitleContainer">
-                <h1>Log Activity</h1>
+                <div className="topLeft">
+                  <h1 className="userTitle">Log Activity</h1>
+                </div>
+                <div className="topRight">
+                  <Button variant="text">
+                    <Link to="/UserDashboard" className="link">
+                      Back to Dashboard
+                    </Link>
+                  </Button>
+                </div>
             </div>
             <div className="userShow">
             <div className="userContainer">

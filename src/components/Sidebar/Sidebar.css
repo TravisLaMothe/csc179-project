@@ -23,6 +23,7 @@
 .sidebarList {
     list-style: none;
     padding: 5px;
+    display: block;
 }
 
 .sidebarListItem {

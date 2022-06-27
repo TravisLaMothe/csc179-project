@@ -16,6 +16,8 @@ import HolidayVillageOutlinedIcon from '@mui/icons-material/HolidayVillageOutlin
 import WorkHistoryOutlinedIcon from '@mui/icons-material/WorkHistoryOutlined';
 
 import PublishIcon from '@mui/icons-material/Publish';
+import { Link } from "react-router-dom";
+import Button from '@mui/material/Button';
 
 // import {client} from '../../../index'
 // async function getUser() {
@@ -38,7 +40,16 @@ export default function MyInfo() {
     return(
         <div className="myInfo">
         <div className="userTitleContainer">
-          <h1 className="userTitle">My Info</h1>
+          <div className="topLeft">
+            <h1 className="userTitle">My Info</h1>
+          </div>
+          <div className="topRight">
+            <Button variant="text">
+              <Link to="/UserDashboard" className="link">
+                Back to Dashboard
+              </Link>
+            </Button>
+          </div>
         </div>
         <div className="userContainer">
           <div className="userShow">

@@ -2,6 +2,8 @@ import "./AddEmployee.css"
 import React, {useRef} from "react";
 import {client} from '../../../index';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { Link } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 
@@ -83,7 +85,18 @@ export default function AddEmployee() {
 
     return (
         <div className="addEmployee">
-          <h1 className="newUserTitle">Add Employee</h1>
+          <div className="userTitleContainer">
+            <div className="topLeft">
+                <h1 className="userTitle">Add Employee</h1>
+            </div>
+            <div className="topRight">
+                <Button variant="text">
+                <Link to="/AdminMainDashboard" className="link">
+                    Back to Dashboard
+                </Link>
+                </Button>
+            </div>
+          </div>
           <div className="userShow">
           <form className="newUserForm">
             <div className="userContainer">

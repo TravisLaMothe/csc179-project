@@ -1,12 +1,17 @@
 import React from 'react';
+import './Dashboard.css'
  
-const dashboard = () => {
+export default function Dashboard() {
     return (
-       <div>
-          <h1>Dashboard</h1>
-           <p>Home page body content</p>
-       </div>
-    );
+        <div className="Dashboard">
+            <div className="shadows"><h1>Welcome to Better Health</h1></div>
+            Make 
+            <div className="flip">
+                <div><div>work</div></div>
+                <div><div>lifeStyle</div></div>
+                <div><div>Everything</div></div>
+            </div>
+            AweSoMe!
+        </div>
+    )
 }
- 
-export default dashboard;
