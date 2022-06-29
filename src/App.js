@@ -19,26 +19,36 @@ import AddEmployee from './pages/AdminDashboard/AddEmployee/AddEmployee';
 import ViewTable from './pages/PartnerDashboard/ViewTable/ViewTable';
 import Dashboard from './pages/Dashboard';
 
+import WithoutNav from './components/WithoutNav';
+import WithUserNav from './components/WithUserNav';
+import WithAdminNav from './components/WithAdminNav';
+import WithPartnerNav from './components/WithPartnerNav';
+
 export default function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Header />
         <div className="container">
-          <Sidebar />
           <Routes>
-            <Route exact path="/" element={ <Dashboard /> } />
-            <Route path="/UserDashboard" element={ <UserDashboard /> } />
-            <Route path="/MyInfo" element={ <MyInfo /> } />
-            <Route path="/LogActivity" element={ <LogActivity /> } />
-            <Route path="/ActivityHistory" element={ <ActivityHistory /> } />
-
-            <Route path="/AdminMainDashboard" element={ <AdminMainDashboard /> } />
-            <Route path="/ViewTables" element={ <ViewTables /> } />
-            <Route path="/Analytics" element={ <Analytics /> } />
-            <Route path="/AddEmployee" element={ <AddEmployee /> } />
-
-            <Route path="/ViewTable" element={ <ViewTable /> } />
+            <Route element={<WithoutNav />}>
+              <Route exact path="/" element={ <Dashboard /> } />
+            </Route>
+            <Route element={<WithUserNav />}>
+              <Route path="/UserDashboard" element={ <UserDashboard /> } />
+              <Route path="/MyInfo" element={ <MyInfo /> } />
+              <Route path="/LogActivity" element={ <LogActivity /> } />
+              <Route path="/ActivityHistory" element={ <ActivityHistory /> } />
+            </Route>
+            <Route element={<WithAdminNav />}>
+              <Route path="/AdminMainDashboard" element={ <AdminMainDashboard /> } />
+              <Route path="/ViewTables" element={ <ViewTables /> } />
+              <Route path="/Analytics" element={ <Analytics /> } />
+              <Route path="/AddEmployee" element={ <AddEmployee /> } />
+            </Route>
+            <Route element={<WithPartnerNav />}>
+              <Route path="/ViewTable" element={ <ViewTable /> } />
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>
