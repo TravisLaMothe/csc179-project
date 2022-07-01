@@ -54,3 +54,7 @@
     justify-content: center;
     font-size: 10px;
 }
+
+.userSMIcon {
+    transform: scale(1.5);
+}

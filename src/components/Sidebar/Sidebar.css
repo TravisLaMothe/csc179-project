@@ -57,6 +57,6 @@
 }
 
 .sidebarFooter:hover {
-    color: red;
+    background-color: red;
     text-shadow: -1px 5px 5px #000000;
 }

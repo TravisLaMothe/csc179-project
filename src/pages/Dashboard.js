@@ -2,6 +2,7 @@ import React from 'react';
 import './Dashboard.css'
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useTranslation, Trans } from 'react-i18next';
 
 import UserDashboard from './MyDashboard/UserDashboard/UserDashboard';
 
@@ -10,6 +11,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 export default function Dashboard() {
+    const { t, i18n } = useTranslation();
+
     let navigate = useNavigate();
 
     const handleSubmit = (event) => {
@@ -29,14 +32,14 @@ export default function Dashboard() {
 
     return (
         <div className="Dashboard">
-            <div className="shadows"><h1>Welcome to Better Health</h1></div>
-            <div className="subShadows">Make</div>
+            <div className="shadows"><h1><Trans i18nKey="description.part1">Welcome to Better Health</Trans></h1></div>
+            <div className="subShadows"><Trans i18nKey="description.part2">Make</Trans></div>
             <div className="flip">
-                <div><div>work</div></div>
-                <div><div>lifeStyle</div></div>
-                <div><div>Everything</div></div>
+                <div><div><Trans i18nKey="description.part3">work</Trans></div></div>
+                <div><div><Trans i18nKey="description.part4">lifeStyle</Trans></div></div>
+                <div><div><Trans i18nKey="description.part5">Everything</Trans></div></div>
             </div>
-            <div className="subShadows">AweSoMe!</div>
+            <div className="subShadows"><Trans i18nKey="description.part6">Awesome!</Trans></div>
             <Box className="loginForm" component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
                     margin="normal"
@@ -65,7 +68,7 @@ export default function Dashboard() {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                 >
-                Sign In
+                <Trans i18nKey="description.part7">Sign In</Trans>
                 </Button>
             </Box>
             <div class="footer">
