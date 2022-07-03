@@ -1,5 +1,6 @@
 import "./UserDashboard.css"
-import * as React from 'react';
+
+import React, {useEffect, useState, useRef, useCallback } from "react";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -24,22 +25,47 @@ import PersonIcon from '@mui/icons-material/Person';
 import AddchartIcon from '@mui/icons-material/Addchart';
 import TimelineIcon from '@mui/icons-material/Timeline';
 
-// import {client} from '../../../index'
-// async function getUser() {
-//     const userResponse = await client.entities.user.get('0181747f-3b8d-d2ac-139b-3052b7e850b7');
-//     const name = userResponse.name; 
-//     const age = userResponse.age;
-//     const gender = userResponse.gender;
-//     const height = userResponse.height;
-//     const weight = userResponse.weight;
-//     const temperature = userResponse.temperature;
-//     const pulse = userResponse.pulse;
-//     const pressure = userResponse.pressure;
-//     const respiration = userResponse.respiration;
-//     const exercise = userResponse.exercise;
-//     const vacation = userResponse.vacation;
-//     const work = userResponse.work;
-// }
+ import {client} from '../../../index'
+ import {loggedInUser} from '../../Dashboard';
+
+let USER = [];
+
+async function populateUser(fullname) {
+    console.log('pulling data');
+    const employeeList =  await client.entities.employee.list()
+  
+    var i = 0;
+    for (const employee of employeeList.items) {
+        const name = employee.name;
+        if (fullname.localeCompare(name) != 0) {
+            continue;
+        }
+        const age = employee.age;
+        const gender = employee.gender;
+        const height = employee.height;
+        const weight = employee.weight;
+        const temperature = employee.temperature;
+        const pulse = employee.pulse;
+        const pressure = employee.pressure;
+        const respiration = employee.respiration;
+        const exercise = employee.exercise;
+        const vacation = employee.vacation;
+        const work = employee.work;
+  
+         USER = createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
+    }
+  }
+
+  function createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work) {
+    return {
+      name,
+      age,
+      gender,
+      height, 
+      weight,
+      temperature, pulse, pressure, respiration, exercise, vacation, work
+    };
+  }
 
 const ColorButton = styled(Button)(() => ({
   display: 'block',
@@ -65,10 +91,40 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 
 export default function UserDashboard() {
+  const [name, setName] = useState(NaN);
+  const [age, setAge] = useState(NaN);
+  const [height, setHeight] = useState(NaN);
+  const [temperature, setTemperature] = useState(NaN);
+  const [weight, setWeight] = useState(NaN);
+  const [pulse, setPulse] = useState(NaN);
+  const [pressure, setPressure] = useState(NaN);
+  const [respiration, setRespiration] = useState(NaN);
+  const [exercise, setExercise] = useState(NaN);
+  const [vacation, setVacation] = useState(NaN);
+  const [work, setWork] = useState(NaN);
+  const [gender, setGender] = useState(NaN);
+
+    useEffect(() => {
+      populateUser(loggedInUser).then(res => {
+        setName(USER.name);
+        setAge(USER.age);
+        setTemperature(USER.temperature);
+        setHeight(USER.height);
+        setWeight(USER.weight);
+        setPulse(USER.pulse);
+        setPressure(USER.pressure);
+        setRespiration(USER.respiration);
+        setExercise(USER.exercise);
+        setVacation(USER.vacation);
+        setWork(USER.work);
+        setGender(USER.gender);
+      });
+    }, []);
+
   return(
     <div className="UserDashboard">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Welcome, Anna Becker</h1>
+        <h1 className="userTitle">Welcome, {name}</h1>
       </div>
 
       <div className="cardContainer">
@@ -87,7 +143,7 @@ export default function UserDashboard() {
                         <ThermostatIcon className="userShowIcon" />
                       </div>
                       <Typography variant="body2" color="text.secondary">
-                        98.6
+                        {temperature}
                       </Typography>
                     </CardContent>
                   </CardActionArea>
@@ -105,7 +161,7 @@ export default function UserDashboard() {
                         </Typography>
                         <TimelineOutlinedIcon className="userShowIcon" />
                         <Typography variant="body2" color="text.secondary">
-                            100
+                            {pulse}
                         </Typography>
                         </CardContent>
                     </CardActionArea>
@@ -123,7 +179,7 @@ export default function UserDashboard() {
                       </Typography>
                       <SpeedOutlinedIcon className="userShowIcon" />
                       <Typography variant="body2" color="text.secondary">
-                          120
+                          {pressure}
                       </Typography>
                       </CardContent>
                   </CardActionArea>
@@ -141,7 +197,7 @@ export default function UserDashboard() {
                       </Typography>
                       <AirOutlinedIcon className="userShowIcon" />
                       <Typography variant="body2" color="text.secondary">
-                          12
+                          {respiration}
                       </Typography>
                       </CardContent>
                   </CardActionArea>
@@ -159,7 +215,7 @@ export default function UserDashboard() {
                       </Typography>
                       <DownhillSkiingOutlinedIcon className="userShowIcon" />
                       <Typography variant="body2" color="text.secondary">
-                          12
+                          {exercise}
                       </Typography>
                       </CardContent>
                   </CardActionArea>
@@ -177,7 +233,7 @@ export default function UserDashboard() {
                       </Typography>
                       <HolidayVillageOutlinedIcon className="userShowIcon" />
                       <Typography variant="body2" color="text.secondary">
-                          34
+                          {vacation}
                       </Typography>
                       </CardContent>
                   </CardActionArea>
@@ -195,7 +251,7 @@ export default function UserDashboard() {
                       </Typography>
                       <WorkHistoryOutlinedIcon className="userShowIcon" />
                       <Typography variant="body2" color="text.secondary">
-                        91
+                        {work}
                       </Typography>
                       </CardContent>
                   </CardActionArea>

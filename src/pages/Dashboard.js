@@ -10,6 +10,9 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
+export const loggedInUser = "Travis LaMothe";
+export const loggedInId = "0181c150-13fb-49d3-ec66-6ac66f45b2d1";
+
 export default function Dashboard() {
     const { t, i18n } = useTranslation();
 
@@ -19,7 +22,7 @@ export default function Dashboard() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        if (data.get('email')==="user" && data.get('password')==="user") {
+        if (data.get('email')==="tlamothe" && data.get('password')==="user") {
             navigate("/UserDashboard", { replace: true });
         } else if (data.get('email')==="admin" && data.get('password')==="admin") {
             navigate("/AdminMainDashboard", { replace: true });
@@ -71,7 +74,7 @@ export default function Dashboard() {
                 <Trans i18nKey="description.part7">Sign In</Trans>
                 </Button>
             </Box>
-            <div class="footer">
+            <div className="footer">
                 <p>Team: Better Dragon</p>
             </div>
         </div>

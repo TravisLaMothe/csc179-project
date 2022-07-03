@@ -1,5 +1,7 @@
 import "./MyInfo.css"
 
+import React, {useEffect, useState, useRef, useCallback } from "react";
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -19,26 +21,149 @@ import PublishIcon from '@mui/icons-material/Publish';
 import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 
-// import {client} from '../../../index'
-// async function getUser() {
-//     const userResponse = await client.entities.user.get('0181747f-3b8d-d2ac-139b-3052b7e850b7');
-//     const name = userResponse.name; 
-//     const age = userResponse.age;
-//     const gender = userResponse.gender;
-//     const height = userResponse.height;
-//     const weight = userResponse.weight;
-//     const temperature = userResponse.temperature;
-//     const pulse = userResponse.pulse;
-//     const pressure = userResponse.pressure;
-//     const respiration = userResponse.respiration;
-//     const exercise = userResponse.exercise;
-//     const vacation = userResponse.vacation;
-//     const work = userResponse.work;
-// }
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import ConfirmationDialogRaw from '../../../ConfirmationDialogRaw'
+
+import {client} from '../../../index'
+
+import {loggedInUser} from '../../Dashboard';
+
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
+let USER = [];
+
+async function populateUser(fullname) {
+    console.log('pulling data');
+    const employeeList =  await client.entities.employee.list();
+    var i = 0;
+    for (const employee of employeeList.items) {
+        const name = employee.name;
+        if (fullname.localeCompare(name) !== 0) {
+            continue;
+        }
+        const age = employee.age;
+        const gender = employee.gender;
+        const height = employee.height;
+        const weight = employee.weight;
+        const temperature = employee.temperature;
+        const pulse = employee.pulse;
+        const pressure = employee.pressure;
+        const respiration = employee.respiration;
+        const exercise = employee.exercise;
+        const vacation = employee.vacation;
+        const work = employee.work;
+  
+         USER = createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
+    }
+  }
+
+  function createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work) {
+    return {
+      name,
+      age,
+      gender,
+      height, 
+      weight,
+      temperature, pulse, pressure, respiration, exercise, vacation, work
+    };
+  }
 
 export default function MyInfo() {
+  const [name, setName] = useState(NaN);
+  const [age, setAge] = useState(NaN);
+  const [height, setHeight] = useState(NaN);
+  const [temperature, setTemperature] = useState(NaN);
+  const [weight, setWeight] = useState(NaN);
+  const [pulse, setPulse] = useState(NaN);
+  const [pressure, setPressure] = useState(NaN);
+  const [respiration, setRespiration] = useState(NaN);
+  const [exercise, setExercise] = useState(NaN);
+  const [vacation, setVacation] = useState(NaN);
+  const [work, setWork] = useState(NaN);
+  const [gender, setGender] = useState(NaN);
+
+    useEffect(() => {
+      populateUser(loggedInUser).then(res => {
+        setName(USER.name);
+        setAge(USER.age);
+        setTemperature(USER.temperature);
+        setHeight(USER.height);
+        setWeight(USER.weight);
+        setPulse(USER.pulse);
+        setPressure(USER.pressure);
+        setRespiration(USER.respiration);
+        setExercise(USER.exercise);
+        setVacation(USER.vacation);
+        setWork(USER.work);
+        setGender(USER.gender);
+
+        setValue(USER.gender);
+      });
+    }, []);
+
+    const nameRef = useRef();
+    const ageRef = useRef();
+    const heightRef = useRef();
+    const weightRef = useRef();
+
+    const [openGenderMenu, setGenderOpen] = React.useState(false);
+    const [value, setValue] = React.useState('Woman');
+  
+    const handleClickListItem = () => {
+     setGenderOpen(true);
+    };
+  
+    const handleClose = (newValue) => {
+     setGenderOpen(false);
+  
+      if (newValue) {
+        setValue(newValue);
+      }
+    };
+
+     const handleClickOpen = () => {
+      switch (true) {
+        //case nameRef.current.value === "":
+        case ageRef.current.value === "":
+        case weightRef.current.value === "":
+        case heightRef.current.value === "":
+        case isNaN(ageRef.current.value):
+        case isNaN(weightRef.current.value):
+        case isNaN(heightRef.current.value):
+        case value === "":
+           alert('Please make sure all boxes are filled in correctly!');
+           break;
+        default:
+           //setName(nameRef.current.value);
+           setAge(ageRef.current.value);
+           setGender(value);
+           setHeight(heightRef.current.value);
+           setWeight(weightRef.current.value);
+          break;
+     }
+    };
+
+    const [open, setOpen] = React.useState(false);
+    const handleCloseLoading = () => {
+      setOpen(false);
+    };
+    const handleToggle = () => {
+      setOpen(!open);
+    };
+
     return(
         <div className="myInfo">
+          <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
         <div className="userTitleContainer">
           <div className="topLeft">
             <h1 className="userTitle">My Info</h1>
@@ -56,7 +181,7 @@ export default function MyInfo() {
             <div className="userShowTop">
               <div className="userPhoto"><AccountCircleIcon /></div>
               <div className="userShowTopTitle">
-                <span className="userShowUsername">Anna Becker</span>
+                <span className="userShowUsername">{name}</span>
               </div>
             </div>
             <div className="userWrapper">
@@ -66,31 +191,31 @@ export default function MyInfo() {
                     <div className="userShowInfo">
                         <PermIdentityIcon className="userShowIcon" />
                         Name: 
-                        <span className="userShowInfoTitle">annabeck99</span>
+                        <span className="userShowInfoTitle">tlamothe</span>
                     </div>
-                    {/* age */}
+                    {/* age */} 
                     <div className="userShowInfo">
                         <CalendarTodayIcon className="userShowIcon" />
                         Age:
-                        <span className="userShowInfoTitle">28</span>
+                        <span className="userShowInfoTitle">{age}</span>
                     </div>
                     {/* gender */}
                     <div className="userShowInfo">
                         <WcIcon className="userShowIcon" />
                         Gender: 
-                        <span className="userShowInfoTitle">Woman</span>
+                        <span className="userShowInfoTitle">{gender}</span>
                     </div>
                     {/* height */}
                     <div className="userShowInfo">
                         <StraightenIcon className="userShowIcon" />
                         Height: 
-                        <span className="userShowInfoTitle">78</span>
+                        <span className="userShowInfoTitle">{height}</span>
                     </div>
                     {/* weight */}
                     <div className="userShowInfo">
                         <ScaleIcon className="userShowIcon" />
                         Weight: 
-                        <span className="userShowInfoTitle">114</span>
+                        <span className="userShowInfoTitle">{weight}</span>
                     </div>
                 </div>
 
@@ -100,31 +225,31 @@ export default function MyInfo() {
                     <div className="userShowInfo">
                         <ThermostatIcon className="userShowIcon" />
                         Temperature: 
-                        <span className="userShowInfoTitle">98.6</span>
+                        <span className="userShowInfoTitle">{temperature}</span>
                     </div>
                     {/* pulse */}
                     <div className="userShowInfo">
                         <TimelineOutlinedIcon className="userShowIcon" />
                         Pulse: 
-                        <span className="userShowInfoTitle">100</span>
+                        <span className="userShowInfoTitle">{pulse}</span>
                     </div>
                     {/* pressure */}
                     <div className="userShowInfo">
                         <SpeedOutlinedIcon className="userShowIcon" />
                         Pressure: 
-                        <span className="userShowInfoTitle">120</span>
+                        <span className="userShowInfoTitle">{pressure}</span>
                     </div>
                     {/* respiration */}
                     <div className="userShowInfo">
                         <AirOutlinedIcon className="userShowIcon" />
                         Respiration: 
-                        <span className="userShowInfoTitle">12</span>
+                        <span className="userShowInfoTitle">{respiration}</span>
                     </div>
                     {/* exercise */}
                     <div className="userShowInfo">
                         <DownhillSkiingOutlinedIcon className="userShowIcon" />
                         Exercise: 
-                        <span className="userShowInfoTitle">12</span>
+                        <span className="userShowInfoTitle">{exercise}</span>
                         <span className="userShowInfoTitle"> </span>
                         hours
                     </div>
@@ -132,7 +257,7 @@ export default function MyInfo() {
                     <div className="userShowInfo">
                         <HolidayVillageOutlinedIcon className="userShowIcon" />
                         Vacation: 
-                        <span className="userShowInfoTitle">34</span>
+                        <span className="userShowInfoTitle">{vacation}</span>
                         <span className="userShowInfoTitle"> </span>
                         hours
                     </div>
@@ -140,7 +265,7 @@ export default function MyInfo() {
                     <div className="userShowInfo">
                         <WorkHistoryOutlinedIcon className="userShowIcon" />
                         Work: 
-                        <span className="userShowInfoTitle">91</span>
+                        <span className="userShowInfoTitle">{work}</span>
                         <span className="userShowInfoTitle"> </span>
                         hours
                     </div>
@@ -151,42 +276,92 @@ export default function MyInfo() {
             <span className="userUpdateTitle">Edit</span>
             <form className="userUpdateForm">
               <div className="userUpdateLeft">
-                <div className="userUpdateItem">
-                  <label>Name</label>
-                  <input
-                    type="text"
-                    className="userUpdateInput"
-                  />
-                </div>
-                <div className="userUpdateItem">
-                  <label>Age</label>
-                  <input
-                    type="text"
-                    className="userUpdateInput"
-                  />
-                </div>
-                <div className="userUpdateItem">
-                  <label>Gender</label>
-                  <input
-                    type="text"
-                    className="userUpdateInput"
-                  />
-                </div>
-                <div className="userUpdateItem">
-                  <label>Height</label>
-                  <input
-                    type="text"
-                    className="userUpdateInput"
-                  />
-                </div>
-                <div className="userUpdateItem">
-                  <label>Weight</label>
-                  <input
-                    type="text"
-                    className="userUpdateInput"
-                  />
-                </div>
-              </div>
+              {/* <div className="newUserItem">
+                <TextField
+                autoFocus
+                margin="dense"
+                id="newName"
+                label="Name"
+                fullWidth
+                variant="standard"
+                inputRef={nameRef}
+              />
+            </div> */}
+            <div className="newUserItem">
+                {/* <label>Pressure</label> */}
+                {/* <input type="text" inputref={pressureRef} placeholder="100" /> */}
+                <TextField
+                autoFocus
+                margin="dense"
+                id="newName"
+                label="Age"
+                fullWidth
+                variant="standard"
+                inputRef={ageRef}
+              />
+            </div>
+
+
+
+
+
+
+            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <List component="div" role="group">
+        <ListItem
+          button
+          divider
+          aria-haspopup="true"
+          aria-controls="ringtone-menu"
+          aria-label="Gender"
+          onClick={handleClickListItem}
+        >
+          <ListItemText primary="Gender" secondary={value} />
+        </ListItem>
+      
+        <ConfirmationDialogRaw
+          id="ringtone-menu"
+          keepMounted
+          open={openGenderMenu}
+          onClose={handleClose}
+        />
+      </List>
+    </Box>
+
+
+
+
+
+
+
+
+
+
+                <div className="newUserItem">
+                {/* <label>Pressure</label> */}
+                {/* <input type="text" inputref={pressureRef} placeholder="100" /> */}
+                <TextField
+                autoFocus
+                margin="dense"
+                id="newName"
+                label="Height"
+                fullWidth
+                variant="standard"
+                inputRef={heightRef}
+              />
+            </div>
+            <div className="newUserItem">
+                <TextField
+                autoFocus
+                margin="dense"
+                id="newName"
+                label="Weight"
+                fullWidth
+                variant="standard"
+                inputRef={weightRef}
+              />
+            </div>
+            </div>
               <div className="userUpdateRight">
                 <div className="userUpdateUpload">
                   <img
@@ -199,7 +374,7 @@ export default function MyInfo() {
                   </label>
                   <input type="file" id="file" style={{ display: "none" }} />
                 </div>
-                <button className="userUpdateButton">Update</button>
+                <button type="button" className="newUserButton" onClick={handleClickOpen} >Update</button>
               </div>
             </form>
           </div>

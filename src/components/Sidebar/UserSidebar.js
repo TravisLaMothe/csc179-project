@@ -9,6 +9,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import AddchartIcon from '@mui/icons-material/Addchart';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
 
 const ColorButton = styled(Button)(() => ({
     width: 'fix-content',
@@ -63,6 +64,22 @@ export default function UserSidebar() {
                                 <li className="sidebarListItem">
                                     <TimelineIcon className="sidebarIcon" />
                                     Activity History
+                                </li>
+                            </Link>
+                        </ColorButton>
+                        <ColorButton variant="text">
+                            <Link to="/Analytics" className="link">
+                                <li className="sidebarListItem">
+                                    <AnalyticsIcon className="sidebarIcon" />
+                                    Analytics
+                                </li>
+                            </Link>
+                        </ColorButton>
+                        <ColorButton variant="text">
+                            <Link to="/Aggregate" className="link">
+                                <li className="sidebarListItem">
+                                    <AnalyticsIcon className="sidebarIcon" />
+                                    Aggregate
                                 </li>
                             </Link>
                         </ColorButton>

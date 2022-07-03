@@ -108,6 +108,48 @@
   z-index:-1;
 }
 
+.height {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+  z-index:1;
+}
+
+.height::before {    
+  content: "";
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-image: url("../../../assets/images/userDashboard/height.jpg");
+  background-size: cover;
+  opacity: 0.2;
+  z-index:-1;
+}
+
+.weight {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+  z-index:1;
+}
+
+.weight::before {    
+  content: "";
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-image: url("../../../assets/images/userDashboard/weight.jpg");
+  background-size: cover;
+  opacity: 0.2;
+  z-index:-1;
+}
+
 .exercise {
   width: 100%;
   height: 100%;

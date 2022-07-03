@@ -11,7 +11,12 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
-import ConfirmationDialogRaw from '../../../ConfirmationDialogRaw'
+import ConfirmationDialogRaw from '../../../ConfirmationDialogRaw';
+
+import { useNavigate } from "react-router-dom";
+
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 async function addUser(nname, aage, ggender, hheight, wweight, ttemperature, ppulse, ppressure, rrespiration, eexercise, vvacation, wwork) {
   const employeeResponse = await client.entities.employee.add({
@@ -27,6 +32,89 @@ async function addUser(nname, aage, ggender, hheight, wweight, ttemperature, ppu
     exercise: isNaN(eexercise) ? 1 : eexercise,
     vacation: isNaN(vvacation) ? 1 : vvacation,
     work: isNaN(wwork) ? 1 : wwork,
+  },
+  {
+    aclInput: {
+      acl: [
+        {
+          principal: {
+            nodes: ['*'],
+          },
+          path: "age", 
+          operations: ['READ'],
+        },
+        {
+          principal: {
+            nodes: ['*'],
+          },
+          path: "gender", 
+          operations: ['READ'],
+        },
+        {
+          principal: {
+            nodes: ['*'],
+          },
+          path: "height", 
+          operations: ['READ'],
+        },
+        {
+          principal: {
+            nodes: ['*'],
+          },
+          path: "weight", 
+          operations: ['READ'],
+        },
+        {
+          principal: {
+            nodes: ['*'],
+          },
+          path: "temperature", 
+          operations: ['READ'],
+        },
+        {
+          principal: {
+            nodes: ['*'],
+          },
+          path: "pulse", 
+          operations: ['READ'],
+        },
+        {
+          principal: {
+            nodes: ['*'],
+          },
+          path: "pressure", 
+          operations: ['READ'],
+        },
+        {
+          principal: {
+            nodes: ['*'],
+          },
+          path: "respiration", 
+          operations: ['READ'],
+        },
+        {
+          principal: {
+            nodes: ['*'],
+          },
+          path: "exercise", 
+          operations: ['READ'],
+        },
+        {
+          principal: {
+            nodes: ['*'],
+          },
+          path: "vacation", 
+          operations: ['READ'],
+        },
+        {
+          principal: {
+            nodes: ['*'],
+          },
+          path: "work", 
+          operations: ['READ'],
+        },
+      ],
+    },
   });
 }
 
@@ -43,8 +131,12 @@ export default function AddEmployee() {
   const vacationRef = useRef(0);
   const workRef = useRef(0);
 
+  const navigate = useNavigate();
+
   const [openGenderMenu, setGenderOpen] = React.useState(false);
   const [value, setValue] = React.useState('Man');
+
+  const [openLoader, setOpenLoader] = React.useState(false);
 
   const handleClickListItem = () => {
    setGenderOpen(true);
@@ -68,23 +160,34 @@ export default function AddEmployee() {
       case isNaN(ageRef.current.value):
       case isNaN(weightRef.current.value):
       case isNaN(heightRef.current.value):
-      case isNaN(temperatureRef.current.value):
-      case isNaN(pulseRef.current.value):
-      case isNaN(pressureRef.current.value):
-      case isNaN(respirationRef.current.value):
-      case isNaN(exerciseRef.current.value):
-      case isNaN(vacationRef.current.value):
-      case isNaN(workRef.current.value):
+      case isNaN(temperatureRef.current.value) || temperatureRef.current.value === "":
+      case isNaN(pulseRef.current.value) || pulseRef.current.value === "":
+      case isNaN(pressureRef.current.value) || pressureRef.current.value === "":
+      case isNaN(respirationRef.current.value) || respirationRef.current.value === "":
+      case isNaN(exerciseRef.current.value) || exerciseRef.current.value === "":
+      case isNaN(vacationRef.current.value) || vacationRef.current.value === "":
+      case isNaN(workRef.current.value) || workRef.current.value === "":
          alert('Please make sure all boxes are filled in correctly!');
          break;
       default:
-        addUser(nameRef.current.value, parseFloat(ageRef.current.value), value, parseFloat(heightRef.current.value), parseFloat(weightRef.current.value), parseFloat(temperatureRef.current.value), parseFloat(pulseRef.current.value), parseFloat(pressureRef.current.value), parseFloat(respirationRef.current.value), parseFloat(exerciseRef.current.value), parseFloat(vacationRef.current.value), parseFloat(workRef.current.value));
+        setOpenLoader(true);
+        addUser(nameRef.current.value, parseFloat(ageRef.current.value), value, parseFloat(heightRef.current.value), parseFloat(weightRef.current.value), parseFloat(temperatureRef.current.value), parseFloat(pulseRef.current.value), parseFloat(pressureRef.current.value), parseFloat(respirationRef.current.value), parseFloat(exerciseRef.current.value), parseFloat(vacationRef.current.value), parseFloat(workRef.current.value)
+        ).then(res => {
+          setOpenLoader(false);
+          navigate('/AdminMainDashboard');
+        });
          break;
    }
   };
 
     return (
         <div className="addEmployee">
+                              <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openLoader}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
           <div className="userTitleContainer">
             <div className="topLeft">
                 <h1 className="userTitle">Add Employee</h1>

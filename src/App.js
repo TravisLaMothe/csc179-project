@@ -10,6 +10,7 @@ import UserDashboard from './pages/MyDashboard/UserDashboard/UserDashboard';
 import MyInfo from './pages/MyDashboard/MyInfo/MyInfo';
 import LogActivity from './pages/MyDashboard/LogActivity/LogActivity';
 import ActivityHistory from './pages/MyDashboard/ActivityHistory/ActivityHistory';
+import Aggregate from './pages/MyDashboard/Aggregate/Aggregate';
 
 import AdminMainDashboard from './pages/AdminDashboard/AdminMainDashboard/AdminMainDashboard';
 import ViewTables from './pages/AdminDashboard/ViewTables/ViewTables';
@@ -39,6 +40,8 @@ export default function App() {
               <Route path="/MyInfo" element={ <MyInfo /> } />
               <Route path="/LogActivity" element={ <LogActivity /> } />
               <Route path="/ActivityHistory" element={ <ActivityHistory /> } />
+              <Route path="/Analytics" element={ <Analytics /> } />
+              <Route path="/Aggregate" element={ <Aggregate /> } />
             </Route>
             <Route element={<WithAdminNav />}>
               <Route path="/AdminMainDashboard" element={ <AdminMainDashboard /> } />

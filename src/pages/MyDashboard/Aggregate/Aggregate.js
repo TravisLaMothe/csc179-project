@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 import Box from '@mui/material/Box';
@@ -15,73 +15,52 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
 import {client} from '../../../index'
-import "./ViewTables.css"
+import "./Aggregate.css"
 
 var loaded = false;
-async function populateTable() {
-    if (loaded)
-      return;
+
+async function populateTable(ingender) {
+  console.log('test: ' + genders[ingender]);
+
     loaded = true;
     console.log('pulling data');
-    const employeeList =  await client.entities.employee.list();
+    const employeeList =  await client.entities.employee.list()
   
     let USERS = []
     var i = 0;
     for (const employee of employeeList.items) {
-        const name = employee.name; 
-        const age = employee.age;
         const gender = employee.gender;
-        const height = employee.height;
-        const weight = employee.weight;
-        const temperature = employee.temperature;
-        const pulse = employee.pulse;
-        const pressure = employee.pressure;
-        const respiration = employee.respiration;
-        const exercise = employee.exercise;
-        const vacation = employee.vacation;
-        const work = employee.work;
-  
-        USERS[i] = createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
 
-        const employeeHistoryList =  await client.entities.employeeHistory.list();
-        let x = 0;
-        for (const employeeHistory of employeeHistoryList.items) {
-          const nameHist = employeeHistory.name; 
-          if (nameHist.localeCompare(name) === 0) {
-            const dateHist = employeeHistory.date;
-            const temperatureHist = employeeHistory.temperature;
-            const pulseHist = employeeHistory.pulse;
-            const pressureHist = employeeHistory.pressure;
-            const respirationHist = employeeHistory.respiration;
-            const exerciseHist = employeeHistory.exercise;
-            const vacationHist = employeeHistory.vacation;
-            const workHist = employeeHistory.work;
+        if (genders[ingender].localeCompare('All') === 0 || gender.localeCompare(genders[ingender]) === 0) {
+          const keyy = employee._id;
+          const height = employee.height;
+          const weight = employee.weight;
+          const temperature = employee.temperature;
+          const pulse = employee.pulse;
+          const pressure = employee.pressure;
+          const respiration = employee.respiration;
+          const exercise = employee.exercise;
+          const vacation = employee.vacation;
+          const work = employee.work;
     
-            USERS[i].history[x++] = createSingletonData(dateHist, temperatureHist, pulseHist, pressureHist, respirationHist, exerciseHist, vacationHist, workHist);
-          }
-        }
-        i++;
+          USERS[i++] = createData(keyy, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
+      }
     }
-
-    
     rows = USERS;
   }
 
-  function createSingletonData(date, temperature, pulse, pressure, respiration, exercise, vacation, work) {
+function createData(keyy, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work) {
     return {
-      date,
-      temperature, pulse, pressure, respiration, exercise, vacation, work
-    };
-  }
-
-function createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work) {
-    return {
-      name,
-      age,
+      keyy,
       gender,
       height, 
       weight,
@@ -89,8 +68,6 @@ function createData(name, age, gender, height, weight, temperature, pulse, press
        {
           temperature, pulse, pressure, respiration, exercise, vacation, work
         },
-      ],
-      history: [
       ],
     };
   }
@@ -113,9 +90,8 @@ function Row(props) {
             </IconButton>
           </TableCell>
           <TableCell component="th" scope="row">
-            {row.name}
+            {row.keyy}
           </TableCell>
-          <TableCell align="right">{row.age}</TableCell>
           <TableCell align="right">{row.gender}</TableCell>
           <TableCell align="right">{row.height}</TableCell>
           <TableCell align="right">{row.weight}</TableCell>
@@ -163,41 +139,7 @@ function Row(props) {
               </Box>
  
  
-            <Box sx={{ margin: 1 }}>
-                <Typography variant="h6" gutterBottom component="div">
-                  History
-                </Typography>
-                <Table size="small" aria-label="purchases">
-                  <TableHead> 
-                    <TableRow>
-                      <TableCell>Date</TableCell>
-                      <TableCell>Temperature</TableCell>
-                      <TableCell >Pulse</TableCell>
-                      <TableCell >Pressure</TableCell>
-                      <TableCell >Respiration</TableCell>
-                      <TableCell >Exercise</TableCell>
-                      <TableCell >Vacation</TableCell>
-                      <TableCell >Work</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {row.history.map((historyRow) => (
-                      <TableRow key={historyRow.date}>
-                        <TableCell component="th" scope="row">
-                          {historyRow.date}
-                        </TableCell>
-                        <TableCell>{historyRow.temperature}</TableCell>
-                        <TableCell >{historyRow.pulse}</TableCell>
-                        <TableCell >{historyRow.pressure}</TableCell>
-                        <TableCell >{historyRow.respiration}</TableCell>
-                        <TableCell >{historyRow.exercise}</TableCell>
-                        <TableCell >{historyRow.vacation}</TableCell>
-                        <TableCell >{historyRow.work}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Box>
+          
              
               </Collapse>
           </TableCell>
@@ -208,8 +150,7 @@ function Row(props) {
   
   Row.propTypes = {
     row: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      age: PropTypes.number.isRequired,
+      keyy: PropTypes.string.isRequired,
       gender: PropTypes.string.isRequired,
       height: PropTypes.number.isRequired,
       weight: PropTypes.number.isRequired,
@@ -224,36 +165,45 @@ function Row(props) {
            work: PropTypes.number.isRequired
         }),
  
-      ).isRequired,
-      history: PropTypes.arrayOf(
-        PropTypes.shape({
-          date: PropTypes.string.isRequired,
-          temperature: PropTypes.number.isRequired,
-          pulse: PropTypes.string.isRequired,
-          pressure: PropTypes.string.isRequired,
-          respiration: PropTypes.string.isRequired,
-          exercise: PropTypes.string.isRequired,
-          vacation: PropTypes.string.isRequired,
-          work: PropTypes.string.isRequired,
-        }),
+ 
       ).isRequired,
     }).isRequired,
   };
   
+
+  const genders = [
+    'All',
+    'Woman',
+    'Man',
+    'Transgender',
+    'NonBinary',
+    'NotRespond',
+  ];
+
 var rows = [];
 
 export default function ViewTables() {
-    const [data, setData] = React.useState([])
+    const [data, setData] = React.useState([]);
 
     useEffect(() => {
-      populateTable().then(res => setData(rows));
+      populateTable(0).then(res => setData(rows));
     }, []);
+
+
 
     const [open, setOpen] = React.useState(false);
 
     const handleClick = () => {
+      // loaded = false;
+      // populateTable(0);
+    };
+
+    const [gender, setGender] = useState(0);
+
+    const handleGenderChange = (event) => {
+      setGender(event.target.value);
       loaded = false;
-      populateTable();
+      populateTable(event.target.value).then(res => setData(rows));
     };
 
     return (
@@ -274,10 +224,27 @@ export default function ViewTables() {
         
 
         <Stack direction="row"  spacing={2}>
-          <Button variant="contained"
-          onClick={handleClick}>
-             Refresh
-          </Button>
+          <Box sx={{ minWidth: 120 }}>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                    <Select
+                    defaultValue={0}
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={gender}
+                    label="Gender"
+                    
+                    onChange={handleGenderChange}
+                    >
+                    <MenuItem value={0}>All</MenuItem>
+                    <MenuItem value={1}>Woman</MenuItem>
+                    <MenuItem value={2}>Man</MenuItem>
+                    <MenuItem value={3}>Transgender</MenuItem>
+                    <MenuItem value={4}>NonBinary</MenuItem>
+                    <MenuItem value={5}>NotRespond</MenuItem>
+                    </Select>
+                </FormControl>
+            </Box>
         </Stack>
 
 
@@ -286,8 +253,7 @@ export default function ViewTables() {
       <TableHead>
         <TableRow>
           <TableCell />
-          <TableCell>Full Name</TableCell>
-          <TableCell align="right">Age</TableCell>
+          <TableCell >Key</TableCell>
           <TableCell align="right">Gender</TableCell>
           <TableCell align="right">Height</TableCell>
           <TableCell align="right">Weight</TableCell>
@@ -295,7 +261,7 @@ export default function ViewTables() {
       </TableHead>
       <TableBody>
        {rows.map((row) => (
-          <Row key={row.name} row={row} />
+          <Row key={row.keyy} row={row} />
        ))}
       </TableBody>
     </Table>

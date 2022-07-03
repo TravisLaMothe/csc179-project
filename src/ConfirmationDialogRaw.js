@@ -86,7 +86,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
     'Man',
     'Transgender',
     'NonBinary',
-    'NoResponse',
+    'NotRespond',
   ];
 
   export default ConfirmationDialogRaw;

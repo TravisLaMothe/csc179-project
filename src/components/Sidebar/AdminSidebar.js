@@ -50,14 +50,14 @@ export default function AdminSidebar() {
                                 </li>
                             </Link>
                         </ColorButton>
-                        <ColorButton variant="text">
+                        {/* <ColorButton variant="text">
                             <Link to="/Analytics" className="link">
                                 <li className="sidebarListItem">
                                     <AnalyticsIcon className="sidebarIcon" />
                                     Analytics
                                 </li>
                             </Link>
-                        </ColorButton>
+                        </ColorButton> */}
                         <ColorButton variant="text">
                             <Link to="/AddEmployee" className="link">
                                 <li className="sidebarListItem">

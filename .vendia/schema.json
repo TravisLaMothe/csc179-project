@@ -3,6 +3,11 @@
   "$id": "http://vendia.net/schemas/demos/employee.json",
   "title": "Employee",
   "description": "Employee data",
+  "x-vendia-acls": {
+    "EmployeeAcl": {
+      "type": "Employee"
+    }
+  },
   "type": "object",
   "properties": {
     "Employee": {
@@ -37,6 +42,51 @@
           "weight": {
             "description": "Weight in pounds",
             "type": "number"
+          },
+          "temperature": {
+            "description": "Body temperature in fahrenheit",
+            "type": "number"
+          },
+          "pulse": {
+            "description": "Pulse rate",
+            "type": "number"
+          },
+          "pressure": {
+            "description": "Blood pressure",
+            "type": "number"
+          },
+          "respiration": {
+            "description": "Respiration rate",
+            "type": "number"
+          },
+          "exercise": {
+            "description": "Avg hours of exercise per week",
+            "type": "number"
+          },
+          "vacation": {
+            "description": "Vacation balance",
+            "type": "number"
+          },
+          "work": {
+            "description": "Avg hours of work per week",
+            "type": "number"
+          }
+        }
+      }
+    },
+    "EmployeeHistory": {
+      "description": "Employee history data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Employee name",
+            "type": "string"
+          },
+          "date": {
+            "description": "Date of change",
+            "type": "string"
           },
           "temperature": {
             "description": "Body temperature in fahrenheit",
