@@ -26,20 +26,23 @@ import AddchartIcon from '@mui/icons-material/Addchart';
 import TimelineIcon from '@mui/icons-material/Timeline';
 
  import {client} from '../../../index'
- import {loggedInUser} from '../../Dashboard';
+ import {loggedInId} from '../../Dashboard';
+
+ import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 let USER = [];
 
-async function populateUser(fullname) {
+async function populateUser(id) {
     console.log('pulling data');
-    const employeeList =  await client.entities.employee.list()
-  
-    var i = 0;
-    for (const employee of employeeList.items) {
-        const name = employee.name;
-        if (fullname.localeCompare(name) != 0) {
-            continue;
-        }
+   // const employeeList =  await client.entities.employee.list()
+   const employee = await client.entities.employee.get(id);
+    // var i = 0;
+    // for (const employee of employeeList.items) {
+         const name = employee.name;
+    //     if (fullname.localeCompare(name) != 0) {
+    //         continue;
+    //     }
         const age = employee.age;
         const gender = employee.gender;
         const height = employee.height;
@@ -53,7 +56,7 @@ async function populateUser(fullname) {
         const work = employee.work;
   
          USER = createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
-    }
+    //}
   }
 
   function createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work) {
@@ -105,7 +108,9 @@ export default function UserDashboard() {
   const [gender, setGender] = useState(NaN);
 
     useEffect(() => {
-      populateUser(loggedInUser).then(res => {
+      setOpenLoader(true);
+      populateUser(loggedInId).then(res => {
+        setOpenLoader(false);
         setName(USER.name);
         setAge(USER.age);
         setTemperature(USER.temperature);
@@ -121,8 +126,16 @@ export default function UserDashboard() {
       });
     }, []);
 
+    const [openLoader, setOpenLoader] = React.useState(false);
+
   return(
     <div className="UserDashboard">
+                          <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openLoader}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className="userTitleContainer">
         <h1 className="userTitle">Welcome, {name}</h1>
       </div>

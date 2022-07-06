@@ -10,7 +10,6 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-export const loggedInUser = "Travis LaMothe";
 export const loggedInId = "0181c150-13fb-49d3-ec66-6ac66f45b2d1";
 
 export default function Dashboard() {

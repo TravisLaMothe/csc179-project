@@ -9,7 +9,7 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 
-import {loggedInUser, loggedInId} from '../../Dashboard';
+import { loggedInId} from '../../Dashboard';
 import {client} from '../../../index';
 
 import DatePicker from "react-datepicker";
@@ -30,19 +30,18 @@ let workDataMap = new Map();
 let USER = null;
 
 var loaded = false;
-async function populateTable() {
+async function populateTable(iiid) {
     if (loaded)
       return;
     loaded = true;
     console.log('pulling data');
-    const employeeList =  await client.entities.employee.list();
-  
-    var i = 0;
-    for (const employee of employeeList.items) {
-      
-        const name = employee.name; 
-        if (name !== loggedInUser)
-          continue;
+    //const employeeList =  await client.entities.employee.list();
+    const employee = await client.entities.employee.get(iiid);
+    // var i = 0;
+    // for (const employee of employeeList.items) {
+         const id = employee._id;
+    //     if (id !== loggedInId)
+    //       continue;
         const age = employee.age;
         const gender = employee.gender;
         const height = employee.height;
@@ -55,13 +54,13 @@ async function populateTable() {
         const vacation = employee.vacation;
         const work = employee.work;
   
-        USER = createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
+        USER = createData(id, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
 
         const employeeHistoryList =  await client.entities.employeeHistory.list();
         let x = 0;
         for (const employeeHistory of employeeHistoryList.items) {
           const nameHist = employeeHistory.name; 
-          if (nameHist.localeCompare(name) === 0) {
+          if (nameHist.localeCompare(id) === 0) {
             const dateHist = employeeHistory.date;
             const dateDate = new Date(Date.parse(dateHist));
 
@@ -118,8 +117,57 @@ async function populateTable() {
               });
           }
         }
-        i++;
-    }
+
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        const dateHist = today.toUTCString();
+        const dateDate = new Date(Date.parse(dateHist));
+
+        USER.history[x++] = createSingletonData(dateHist, temperature, pulse, pressure, respiration, exercise, vacation, work); // Add current data last!
+
+        temperatureData.set(Date.parse(dateHist), 
+        {
+          date: dateDate.toLocaleDateString(),
+          temp: temperature
+        });
+
+        pulseDataMap.set(Date.parse(dateHist), 
+        {
+          date: dateDate.toLocaleDateString(),
+          pulse: pulse
+        });
+
+        pressureDataMap.set(Date.parse(dateHist), 
+        {
+          date: dateDate.toLocaleDateString(),
+          pressure: pressure
+        });
+
+        respirationDataMap.set(Date.parse(dateHist), 
+        {
+          date: dateDate.toLocaleDateString(),
+          respiration: respiration
+        });
+
+        exerciseDataMap.set(Date.parse(dateHist), 
+        {
+          date: dateDate.toLocaleDateString(),
+          exercise: exercise
+        });
+
+        vacationDataMap.set(Date.parse(dateHist), 
+        {
+          date: dateDate.toLocaleDateString(),
+          vacation: vacation
+        });
+
+        workDataMap.set(Date.parse(dateHist), 
+        {
+          date: dateDate.toLocaleDateString(),
+          work: work
+        });
+       // i++;
+    //}
   }
 
   function createSingletonData(date, temperature, pulse, pressure, respiration, exercise, vacation, work) {
@@ -129,9 +177,9 @@ async function populateTable() {
     };
   }
 
-function createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work) {
+function createData(id, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work) {
     return {
-      name,
+      id,
       age,
       gender,
       height, 
@@ -251,7 +299,7 @@ export default function ActivityHistory() {
 
     useEffect(() => {
       setOpenLoader(true);
-      populateTable().then(res => {
+      populateTable(loggedInId).then(res => {
         if (temperatureData.size > 0) {
           let earliestDate = null;
           let oldestDate = null;

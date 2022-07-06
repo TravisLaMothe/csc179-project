@@ -214,7 +214,7 @@ export default function ViewTables() {
             </div>
             <div className="topRight">
               <Button variant="text">
-                <Link to="/AdminMainDashboard" className="link">
+                <Link to="/UserDashboard" className="link">
                   Back to Dashboard
                 </Link>
               </Button>

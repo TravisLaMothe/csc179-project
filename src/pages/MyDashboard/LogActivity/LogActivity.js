@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
 
-import {loggedInUser, loggedInId} from '../../Dashboard';
+import {loggedInId} from '../../Dashboard';
 
 import { useNavigate } from "react-router-dom";
 
@@ -14,12 +14,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 let hasUpdated = false;
 
-async function updateHealthHistory(nname, ddate, ttemperature, ppulse, ppressure, rrespiration, eexercise, vvacation, wwork) {
+async function updateHealthHistory(iid, ddate, ttemperature, ppulse, ppressure, rrespiration, eexercise, vvacation, wwork) {
   if (hasUpdated)
     return;
   hasUpdated = true;
   const employeeResponse = await client.entities.employeeHistory.add({
-    name: nname,
+    name: iid,
     date: ddate,
     temperature: isNaN(ttemperature) ? 1 : ttemperature,
     pulse: isNaN(ppulse) ? 1 : ppulse,
@@ -31,20 +31,9 @@ async function updateHealthHistory(nname, ddate, ttemperature, ppulse, ppressure
   });
 }
 
-async function updateCurrentHealth(nname, ttemperature, ppulse, ppressure, rrespiration, eexercise, vvacation, wwork) {
-
-  // const employe =  await client.entities.employee.get(loggedInId);
-
-  //   employe.temperature = ttemperature;
-  //   employe.pulse = ppulse;
-  //   employe.pressure = ppressure;
-  //   employe.respiration = rrespiration;
-  //   employe.exercise = eexercise;
-  //   employe.vacation = vvacation;
-  //   employe.work = wwork;
-
+async function updateCurrentHealth(iid, ttemperature, ppulse, ppressure, rrespiration, eexercise, vvacation, wwork) {
   const updateEmployeeHealth = await client.entities.employee.update({
-    _id: loggedInId,
+    _id: iid,
     pulse: ppulse,
     temperature: ttemperature,
     pressure: ppressure,
@@ -57,15 +46,17 @@ async function updateCurrentHealth(nname, ttemperature, ppulse, ppressure, rresp
 
 let USER = [];
 
-async function getUser(fullname) {
+async function getUser(id) {
     console.log('pulling user data for logactivity');
-    const employeeList =  await client.entities.employee.list();
-    var i = 0;
-    for (const employee of employeeList.items) {
-        const name = employee.name;
-        if (fullname.localeCompare(name) !== 0) {
-            continue;
-        }
+    //const employeeList =  await client.entities.employee.list();
+   // var i = 0;
+    const employee = await client.entities.employee.get(id);
+    // console.log('What: ' + employee1.name);
+    // for (const employee of employeeList.items) {
+         const iid = employee._id;
+    //     if (id.localeCompare(iid) !== 0) {
+    //         continue;
+    //     }
         const age = employee.age;
        
         const gender = employee.gender;
@@ -79,13 +70,13 @@ async function getUser(fullname) {
         const vacation = employee.vacation;
         const work = employee.work;
   
-         USER = createData(fullname, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
-    }
+         USER = createData(iid, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
+   // }
   }
 
-  function createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work) {
+  function createData(id, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work) {
     return {
-      name,
+      id,
       age,
       gender,
       height, 
@@ -125,25 +116,19 @@ export default function LogActivity() {
         const timeElapsed = Date.now();
         const today = new Date(timeElapsed);
         setOpenLoader(true);
-        updateHealthHistory(loggedInUser, today.toUTCString(), parseFloat(USER.temperature), parseFloat(USER.pulse), parseFloat(USER.pressure), parseFloat(USER.respiration), parseFloat(USER.exercise), parseFloat(USER.vacation), parseFloat(USER.work));
-        updateCurrentHealth(loggedInUser, parseFloat(temperatureRef.current.value), parseFloat(pulseRef.current.value), parseFloat(pressureRef.current.value), parseFloat(respirationRef.current.value), parseFloat(exerciseRef.current.value), parseFloat(vacationRef.current.value), parseFloat(workRef.current.value)
+        updateHealthHistory(loggedInId, today.toUTCString(), parseFloat(USER.temperature), parseFloat(USER.pulse), parseFloat(USER.pressure), parseFloat(USER.respiration), parseFloat(USER.exercise), parseFloat(USER.vacation), parseFloat(USER.work));
+        updateCurrentHealth(loggedInId, parseFloat(temperatureRef.current.value), parseFloat(pulseRef.current.value), parseFloat(pressureRef.current.value), parseFloat(respirationRef.current.value), parseFloat(exerciseRef.current.value), parseFloat(vacationRef.current.value), parseFloat(workRef.current.value)
         ).then(res => {
           setOpenLoader(false);
           navigate('/UserDashboard');
         });
-        
-      //   setOpenLoader(true);
-      //   setTimeout(function () {
-      //     setOpenLoader(false);
-      //     navigate('/UserDashboard');
-      // }, 5000);
           
          break;
    }
   };
 
   useEffect(() => {
-    getUser(loggedInUser);
+    getUser(loggedInId);
   }, []);
 
     return(

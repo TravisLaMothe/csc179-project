@@ -21,6 +21,9 @@ import Stack from '@mui/material/Stack';
 import {client} from '../../../index'
 import "./ViewTables.css"
 
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
 var loaded = false;
 async function populateTable() {
     if (loaded)
@@ -32,6 +35,7 @@ async function populateTable() {
     let USERS = []
     var i = 0;
     for (const employee of employeeList.items) {
+      const iid = employee._id;
         const name = employee.name; 
         const age = employee.age;
         const gender = employee.gender;
@@ -51,7 +55,7 @@ async function populateTable() {
         let x = 0;
         for (const employeeHistory of employeeHistoryList.items) {
           const nameHist = employeeHistory.name; 
-          if (nameHist.localeCompare(name) === 0) {
+          if (nameHist.localeCompare(iid) === 0) {
             const dateHist = employeeHistory.date;
             const temperatureHist = employeeHistory.temperature;
             const pulseHist = employeeHistory.pulse;
@@ -229,12 +233,12 @@ function Row(props) {
         PropTypes.shape({
           date: PropTypes.string.isRequired,
           temperature: PropTypes.number.isRequired,
-          pulse: PropTypes.string.isRequired,
-          pressure: PropTypes.string.isRequired,
-          respiration: PropTypes.string.isRequired,
-          exercise: PropTypes.string.isRequired,
-          vacation: PropTypes.string.isRequired,
-          work: PropTypes.string.isRequired,
+          pulse: PropTypes.number.isRequired,
+          pressure: PropTypes.number.isRequired,
+          respiration: PropTypes.number.isRequired,
+          exercise: PropTypes.number.isRequired,
+          vacation: PropTypes.number.isRequired,
+          work: PropTypes.number.isRequired,
         }),
       ).isRequired,
     }).isRequired,
@@ -243,21 +247,36 @@ function Row(props) {
 var rows = [];
 
 export default function ViewTables() {
-    const [data, setData] = React.useState([])
+    const [data, setData] = React.useState([]);
+
+    const [openLoader, setOpenLoader] = React.useState(false);
 
     useEffect(() => {
-      populateTable().then(res => setData(rows));
+      setOpenLoader(true);
+      populateTable().then(res => {
+        setData(rows);
+        setOpenLoader(false);
+      })
     }, []);
 
     const [open, setOpen] = React.useState(false);
 
     const handleClick = () => {
+      setOpenLoader(true);
       loaded = false;
-      populateTable();
+      populateTable().then(() => setOpenLoader(false));
     };
+
+  
 
     return (
         <div className="viewTables">
+                              <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openLoader}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
           <div className="userTitleContainer">
             <div className="topLeft">
               <h1 className="userTitle">View Tables</h1>

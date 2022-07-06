@@ -30,22 +30,28 @@ import ConfirmationDialogRaw from '../../../ConfirmationDialogRaw'
 
 import {client} from '../../../index'
 
-import {loggedInUser} from '../../Dashboard';
-
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import {loggedInId} from '../../Dashboard';
+
+import { useNavigate } from "react-router-dom";
+
+
 let USER = [];
 
-async function populateUser(fullname) {
+async function populateUser(id) {
     console.log('pulling data');
-    const employeeList =  await client.entities.employee.list();
-    var i = 0;
-    for (const employee of employeeList.items) {
+    //const employeeList =  await client.entities.employee.list();
+    //var i = 0;
+    // for (const employee of employeeList.items) {
+        //  const name = employee.name;
+    //     if (fullname.localeCompare(name) !== 0) {
+    //         continue;
+    //     }
+
+        const employee = await client.entities.employee.get(id);
         const name = employee.name;
-        if (fullname.localeCompare(name) !== 0) {
-            continue;
-        }
         const age = employee.age;
         const gender = employee.gender;
         const height = employee.height;
@@ -59,7 +65,7 @@ async function populateUser(fullname) {
         const work = employee.work;
   
          USER = createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work);
-    }
+    //}
   }
 
   function createData(name, age, gender, height, weight, temperature, pulse, pressure, respiration, exercise, vacation, work) {
@@ -71,6 +77,16 @@ async function populateUser(fullname) {
       weight,
       temperature, pulse, pressure, respiration, exercise, vacation, work
     };
+  }
+
+  async function updateCurrentInfo(iid, aage, hheight, wweight, ggender) {
+    const updateEmployeeHealth = await client.entities.employee.update({
+      _id: iid,
+      age: aage,
+      height: hheight,
+      weight: wweight,
+      gender: ggender,
+    });
   }
 
 export default function MyInfo() {
@@ -88,7 +104,7 @@ export default function MyInfo() {
   const [gender, setGender] = useState(NaN);
 
     useEffect(() => {
-      populateUser(loggedInUser).then(res => {
+      populateUser(loggedInId).then(res => {
         setName(USER.name);
         setAge(USER.age);
         setTemperature(USER.temperature);
@@ -139,11 +155,15 @@ export default function MyInfo() {
            alert('Please make sure all boxes are filled in correctly!');
            break;
         default:
-           //setName(nameRef.current.value);
-           setAge(ageRef.current.value);
-           setGender(value);
-           setHeight(heightRef.current.value);
-           setWeight(weightRef.current.value);
+           setOpenLoader(true);
+           updateCurrentInfo(loggedInId, parseFloat(ageRef.current.value), parseFloat(heightRef.current.value), parseFloat(weightRef.current.value), value
+           ).then(res => {
+             setOpenLoader(false);
+             setAge(ageRef.current.value);
+             setGender(value);
+             setHeight(heightRef.current.value);
+             setWeight(weightRef.current.value);
+           });
           break;
      }
     };
@@ -156,11 +176,15 @@ export default function MyInfo() {
       setOpen(!open);
     };
 
+    const navigate = useNavigate();
+
+    const [openLoader, setOpenLoader] = React.useState(false);
+
     return(
         <div className="myInfo">
-          <Backdrop
+         <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open}
+        open={openLoader}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
