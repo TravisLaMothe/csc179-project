@@ -1,5 +1,5 @@
 import "./AdminMainDashboard.css"
-import * as React from 'react';
+import React, {useRef, useEffect, useState} from "react";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -22,6 +22,26 @@ import WorkHistoryOutlinedIcon from '@mui/icons-material/WorkHistoryOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import AddchartIcon from '@mui/icons-material/Addchart';
 import TimelineIcon from '@mui/icons-material/Timeline';
+
+import {client} from '../../../index';
+
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
+let employeeCountInt = 0;
+
+async function getDataCounts() {
+  console.log('pulling user data for admindash');
+  const employeeList =  await client.entities.employee.list();
+  var i = 0;
+
+  // console.log('What: ' + employee1.name);
+  for (const employee of employeeList.items) {
+      i++;
+  }
+
+  employeeCountInt = i;
+}
 
 const ColorButton = styled(Button)(() => ({
   display: 'block',
@@ -47,8 +67,26 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 
 export default function AdminMainDashboard() {
+  const [openLoader, setOpenLoader] = React.useState(false);
+
+  const [employeeCount, setEmployeeCount] = useState(NaN);
+
+  useEffect(() => {
+    setOpenLoader(true);
+    getDataCounts().then(() => {
+      setEmployeeCount(employeeCountInt);
+      setOpenLoader(false);
+    });
+  }, []);
+
   return(
     <div className="AdminMainDashboard">
+                          <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openLoader}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className="userTitleContainer">
         <h1 className="userTitle">Welcome to HR Dashboard</h1>
       </div>
@@ -101,11 +139,11 @@ export default function AdminMainDashboard() {
                   <CardActionArea>
                       <CardContent className="exercise">
                       <Typography gutterBottom variant="h5" component="div">
-                          Placeholder
+                          
                       </Typography>
                       <DownhillSkiingOutlinedIcon className="userShowIcon" />
                       <Typography variant="body2" color="text.secondary">
-                          12
+                          
                       </Typography>
                       </CardContent>
                   </CardActionArea>
@@ -119,11 +157,11 @@ export default function AdminMainDashboard() {
                   <CardActionArea>
                       <CardContent className="vacation">
                       <Typography gutterBottom variant="h5" component="div">
-                        Placeholder
+                        
                       </Typography>
                       <HolidayVillageOutlinedIcon className="userShowIcon" />
                       <Typography variant="body2" color="text.secondary">
-                        34
+                        
                       </Typography>
                       </CardContent>
                   </CardActionArea>
@@ -137,11 +175,11 @@ export default function AdminMainDashboard() {
                   <CardActionArea>
                       <CardContent className="work">
                       <Typography gutterBottom variant="h5" component="div">
-                        Placeholder
+                        Employees
                       </Typography>
                       <WorkHistoryOutlinedIcon className="userShowIcon" />
                       <Typography variant="body2" color="text.secondary">
-                        91
+                        {employeeCount}
                       </Typography>
                       </CardContent>
                   </CardActionArea>

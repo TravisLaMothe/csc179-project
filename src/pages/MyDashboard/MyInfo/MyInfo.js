@@ -215,7 +215,7 @@ export default function MyInfo() {
                     <div className="userShowInfo">
                         <PermIdentityIcon className="userShowIcon" />
                         Name: 
-                        <span className="userShowInfoTitle">tlamothe</span>
+                        <span className="userShowInfoTitle">{name}</span>
                     </div>
                     {/* age */} 
                     <div className="userShowInfo">
